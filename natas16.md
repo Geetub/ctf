@@ -1,4 +1,5 @@
 # Natas16
+Cracking without brute-forcing
 
 ## Solution 1: exfiltrating the password 2-characters per request 
 
