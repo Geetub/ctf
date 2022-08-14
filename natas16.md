@@ -11,9 +11,8 @@ This approach takes advantage of the large amount of possible return values, to 
 In this case, only 16 requests were needed to exfiltrate the 32-characters password.
 
 The file 'dictionary.txt' has 50253 unique rows, so an exploit can signal any value in the range 1-50253.
-For example, to signal the value 9158 we can check what is the word that line in the dictionary => congratulations
-
-By providing _^congratulations$_ this word to the grep command, we should get the same word on the html output.
+For example, to signal the value 9158 we can check what is the word that line in the dictionary => congratulations.
+By providing _^congratulations$_ to the grep command, we should get the same word on the html output.
 Wrapped with ^ and $ guarantees no characters before and after the search string.
 
 On the client side, the response word could be the searched in a local copy of dictionary and the found line number would be the signaled number.
