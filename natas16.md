@@ -65,13 +65,19 @@ Since the password has only ASCII characters (code < 128), each pair of characte
 So, for each character pair, the request should perform:
 
 * Convert the password string to a list of 16-bit unsigned int numbers (each pair of characters to a number)
+```
 od -An -tu2 -w64 < /etc/natas_webpass/natas17
+```
 
 * Pick a specific number from a list
+```
 /tmp/shifter.sh {index} {list of numbers}
+```
 
 * Search the dictionary for a specific line number:
+```
 sed -n {line_number}p < dictionary.txt
+```
 
 ```python
 matches = []
