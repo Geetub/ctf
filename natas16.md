@@ -19,12 +19,15 @@ On the client side, the response word could be the searched in a local copy of d
 
 ### "Shifter" Helper utility - pick one parameter from a list by its index
 This bash script was needed to bypass pipes and quotes characters filters.
-code:
+```
 shift $1
 echo $1
+```
 
 usage:
+```
 shifter.sh 3 100 200 300 400 500
+```
 will return 300
 
 In order to install this script:
