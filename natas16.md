@@ -1,7 +1,22 @@
 # Natas16
 Cracking without brute-forcing
 
-## Solution 1: exfiltrating the password 2-characters per request 
+## Solution 1: getting the password using a redirection trick - with a single request!
+Vulnerabilities:
+* Shell comannd injection using: $( ) and < >
+
+In Linux, it's possible to easily write to the stdout of the current bash session.
+All is needed to get the password is to send this payload:
+```
+$(cat /etc/natas_webpass/natas17 > /proc/$$/fd/1)qqq
+```
+Explanation:
+* $$ - current bash PID
+* /proc/{process ID}/fd/1 - stdout
+* qqq - a search string likely to return empty results
+
+
+## Solution 2: exfiltrating the password 2-characters per request 
 [Source code - Python 3](natas16.py)
 
 Vulnerabilities:
@@ -10,7 +25,7 @@ Vulnerabilities:
 
 ### Making use of large result set
 This approach takes advantage of the large amount of possible return values, to minimize the number of requests needed to get the password.
-In this case, only 16 requests were needed to exfiltrate the 32-characters password.
+In this case, <ins>only 16 requests</ins> were needed to exfiltrate the 32-characters password.
 
 The file 'dictionary.txt' has 50253 unique rows, so an exploit can signal any value in the range 1-50253.
 For example, to signal the value 9158 we can check what is the word that line in the dictionary => congratulations.
@@ -116,3 +131,4 @@ print("".join([chr(c) for c in elb]))
 payload = '$(rm /tmp/shifter.*)'
 r = requests.get(f'{base_url}/?needle={quote(payload)})', auth=auth)
 ```
+
